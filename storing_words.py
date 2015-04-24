@@ -14,7 +14,7 @@ def get_array(word, mods):
 		
 word_mod13 = models.Word2Vec.load('model2013')
 word_mod14 = models.Word2Vec.load('model2014')
-word_mod15 = models.Word2Vec.load('model2012')
+word_mod12 = models.Word2Vec.load('model2012')
 
 
 
