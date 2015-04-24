@@ -9,5 +9,7 @@ reu.py extracts news articles from reuters and stores them in a directory.
 Need to manually change the directory and the dates or months
 
 
+Use this for word2vec model
+https://drive.google.com/folderview?id=0B2D0gE0DfdUHfmcyaEo3UTJ3U1FWTTM5dC1WeF9xYXNWRmZ5MTlHQW9VdVI4U0h3aHltaWc&usp=sharing
 
 
