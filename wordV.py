@@ -69,7 +69,7 @@ def main(path):
     downsampling = 1e-3   # Downsample setting for frequent words
     model = models.Word2Vec(sentences, min_count=min_word_count, size=num_features,  window=context, sample=downsampling, workers = num_workers)
     
-    model.save('initial_model')
+    model.save('model2012')
     return model
     
 
