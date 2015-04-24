@@ -11,7 +11,7 @@ import re
 from nltk.corpus import stopwords
 import nltk
 import cython
-nltk.download()
+#nltk.download()
 def text_proc(Files):
     TextFiles = []
     for i in Files:
