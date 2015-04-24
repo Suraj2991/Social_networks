@@ -12,14 +12,9 @@ def get_array(word, mods):
 	return feat_arrays
 		
 		
-word_mod = models.Word2Vec.load('initial_model')
-
-words = word_mod.index2word
-
-features_word = get_array(words, word_mod)
-
-unsuper_mod = MiniBatchKMeans(n_clusters = 40, max_iter = 400, batch_size = 100, verbose = 20)
-clusts = unsuper_mod.fit_predict(features_word)
+word_mod13 = models.Word2Vec.load('model2013')
+word_mod14 = models.Word2Vec.load('model2014')
+word_mod15 = models.Word2Vec.load('model2012')
 
 
 
