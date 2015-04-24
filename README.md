@@ -2,24 +2,32 @@
 
 ############################################################################################
 wordV.py should be given a path containing News Articles.
+
 News Articles can have sub directories.
+
 The program builds a word2vec model using gensim and stores the model which can then be loaded and used for different purposes.
 
 python wordV.py /home/dir1/news_articlesDir
 
 ############################################################################################
 reu.py extracts news articles from reuters and stores them in a directory.
+
 Need to manually change the directory and the dates or months
 
 ############################################################################################
 Make sure to enter the paths for models correctly
+
 run_server.py 
+
 Basically starts the server and loads models.
+
 Go to  http://127.0.0.1:5000/<word_name>
+
 <word-name> has to be one word, that you want to see the trend for
 
 eg.  http://127.0.0.1:5000/facebook
-return the following (in the shell not the browser) in descending order of variance (most var to least var)
+
+returns the following (in the shell not the browser) in descending order of variance (most var to least var)
 
 
 WORD      Similarities                                  Variance
@@ -85,6 +93,7 @@ users [0.57208762434336224, 0.55081086439577787, 0.52734963435864701] 0.00033384
 instagram [0.5791267100369607, 0.61387133606276645, 0.58725380590615572] 0.000220192404064
 
 
+############################################################################################
 
 Use this for word2vec model
 https://drive.google.com/folderview?id=0B2D0gE0DfdUHfmcyaEo3UTJ3U1FWTTM5dC1WeF9xYXNWRmZ5MTlHQW9VdVI4U0h3aHltaWc&usp=sharing
