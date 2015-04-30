@@ -8,6 +8,7 @@
     display: block;
     margin: auto;
 }
+
 div.bar {
     display: inline-block;
     width: 20px;
@@ -32,3 +33,12 @@ svg .pumpkin {
     stroke-width: 5;
 }
 
+svg {
+    font-family: "Helvetica Neue", Helvetica;
+}
+
+.line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2px;
+}
