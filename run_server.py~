@@ -57,10 +57,7 @@ def create_dict(tuples):
 	for i,j,k in tuples:
 		word_dict = {}
 		word_dict['word'] = i
-		word_dict['2012'] = j[0]
-		word_dict['2013'] = j[1]
-		word_dict['2014'] = j[2]
-		word_dict['variance'] = k
+		word_dict['years'] = j
 		lists.append(word_dict)
 	print lists
 	return lists

@@ -24,7 +24,7 @@
     
             <form action="." method="POST"> 
                 Interesting Word:
-                <input type="text" name="interestingtextfield">
+                <input type="text" name="insterestingtextfield">
                 <!-- You can choose to keep this submit button or not -->
                 <!-- <input type="submit" name="my-form" value="Send"> -->
             </form>
