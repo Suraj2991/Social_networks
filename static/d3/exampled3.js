@@ -9,6 +9,9 @@ var x,
 
 var color = d3.scale.category10();
 
+//var sent_data = JSON.parse({{ result|safe }});
+//console.log(sent_data);
+
 var svg = d3.select("body").append("svg")
     .attr("width", w + m[1] + m[3])
     .attr("height", h + m[0] + m[2])
@@ -68,7 +71,6 @@ d3.csv("/static/d3/stocks.csv", function(data) {
   setTimeout(lines, duration);
 });
 
-console.log("running");
 // Grab a new graph
 /*
 svg.on("click", function() { 

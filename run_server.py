@@ -91,8 +91,10 @@ def load_models():
 	    final_file['Results'] = create_dict(pairs[:6])
     else:
 	    final_file['Results'] = create_dict(pairs[-6:])
-
-    return jsonify(final_file)
+    #jsonified = json.dumps(final_file)
+    jsonified = jsonify(final_file)
+    return render_template('index.html', result = jsonified)
+    #return jsonify(final_file)
 
 mod12 = models.Word2Vec.load('model2012')
 mod13 = models.Word2Vec.load('model2013')
