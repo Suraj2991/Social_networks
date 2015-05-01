@@ -12,9 +12,11 @@ var color = d3.scale.category10();
 var svg = d3.select("body").append("svg")
     .attr("width", w + m[1] + m[3])
     .attr("height", h + m[0] + m[2])
+    .attr("class", "svgCenter")
+    .attr("id", "svgObj")
+    .on('click', function() { new_graph();}) 
   .append("g")
-    .attr("transform", "translate(" + m[3] + "," + m[0] + ")")
-    .attr("class", "svgCenter");
+    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
 var stocks,
     symbols;
@@ -45,8 +47,10 @@ d3.csv("/static/d3/stocks.csv", function(data) {
       .key(function(d) { return d.symbol; })
       .entries(stocks = data);
 
+  // console.log(symbols);
   // Parse dates and numbers. We assume values are sorted by date.
   // Also compute the maximum price per symbol, needed for the y-domain.
+
   symbols.forEach(function(s) {
     s.values.forEach(function(d) { d.date = parse(d.date); d.price = +d.price; });
     s.maxPrice = d3.max(s.values, function(d) { return d.price; });
@@ -55,7 +59,7 @@ d3.csv("/static/d3/stocks.csv", function(data) {
 
   // Sort by maximum price, descending.
   symbols.sort(function(a, b) { return b.maxPrice - a.maxPrice; });
-
+    
   var g = svg.selectAll("g")
       .data(symbols)
     .enter().append("g")
@@ -63,6 +67,15 @@ d3.csv("/static/d3/stocks.csv", function(data) {
 
   setTimeout(lines, duration);
 });
+
+console.log("running");
+// Grab a new graph
+/*
+svg.on("click", function() { 
+    new_graph(); 
+    console.log("Click");
+});
+*/
 
 function lines() {
   x = d3.time.scale().range([0, w - 60]);
@@ -114,10 +127,11 @@ function lines() {
     draw(k);
     if ((k += 2) >= n - 1) {
       draw(n - 1);
-      setTimeout(horizons, 500);
       return true;
     }
   });
+  
+  //setTimeout(horizons, 500);
 }
 
 function horizons() {
@@ -173,7 +187,7 @@ function horizons() {
         .each("end", function() { d3.select(this).style("fill-opacity", null); });
   });
 
-  setTimeout(areas, duration + delay);
+  //setTimeout(areas, duration + delay);
 }
 
 function areas() {
@@ -217,7 +231,7 @@ function areas() {
       .duration(duration)
       .each("end", function() { d3.select(this).attr("clip-path", null); });
 
-  setTimeout(stackedArea, duration + delay);
+  //setTimeout(stackedArea, duration + delay);
 }
 
 function stackedArea() {
@@ -256,7 +270,7 @@ function stackedArea() {
   t.select("text")
       .attr("transform", function(d) { d = d.values[d.values.length - 1]; return "translate(" + (w - 60) + "," + y(d.price / 2 + d.price0) + ")"; });
 
-  setTimeout(streamgraph, duration + delay);
+  //setTimeout(streamgraph, duration + delay);
 }
 
 function streamgraph() {
@@ -286,7 +300,7 @@ function streamgraph() {
   t.select("text")
       .attr("transform", function(d) { d = d.values[d.values.length - 1]; return "translate(" + (w - 60) + "," + y(d.price / 2 + d.price0) + ")"; });
 
-  setTimeout(overlappingArea, duration + delay);
+  // setTimeout(overlappingArea, duration + delay);
 }
 
 function overlappingArea() {
@@ -335,7 +349,7 @@ function overlappingArea() {
       .duration(duration)
       .style("stroke-opacity", 1);
 
-  setTimeout(groupedBar, duration + delay);
+  // setTimeout(groupedBar, duration + delay);
 }
 
 function groupedBar() {
@@ -375,7 +389,7 @@ function groupedBar() {
         .style("fill-opacity", 1);
   });
 
-  setTimeout(stackedBar, duration + delay);
+  // setTimeout(stackedBar, duration + delay);
 }
 
 function stackedBar() {
@@ -418,7 +432,7 @@ function stackedBar() {
             .style("stroke-opacity", 1);
       });
 
-  setTimeout(transposeBar, duration + symbols[0].values.length * 10 + delay);
+  // setTimeout(transposeBar, duration + symbols[0].values.length * 10 + delay);
 }
 
 function transposeBar() {
@@ -459,7 +473,7 @@ function transposeBar() {
       .duration(duration)
       .attr("x2", w);
 
-  setTimeout(donut,  duration / 2 + symbols[0].values.length * 10 + delay);
+  // setTimeout(donut,  duration / 2 + symbols[0].values.length * 10 + delay);
 }
 
 function donut() {
@@ -513,7 +527,7 @@ function donut() {
     };
   }
 
-  setTimeout(donutExplode, duration + delay);
+  // setTimeout(donutExplode, duration + delay);
 }
 
 function donutExplode() {
@@ -556,4 +570,74 @@ function donutExplode() {
     svg.selectAll("g").data(symbols).enter().append("g").attr("class", "symbol");
     lines();
   }, duration);
+}
+
+function linesToHorizon() {
+
+}
+function cleanUp() {
+    svg.selectAll("*").remove();
+    svg.selectAll("g").data(symbols).enter().append("g").attr("class", "symbol");
+    lines();
+}
+
+
+var array_of_functions = [
+    lines,
+    horizons,
+    areas,
+    stackedArea,
+    streamgraph,
+    overlappingArea,
+    groupedBar,
+    stackedBar,
+    transposeBar,
+    donut,
+    donutExplode
+] 
+
+var functions_len = array_of_functions.length;
+
+// Start at one because we automatically show lines initially
+var function_count = 0;
+
+function new_graph() {
+    var current_index = function_count % functions_len;
+    function_count += 1;
+    console.log("Function index: " + current_index); 
+    switch(current_index) {
+        case 0:
+            horizons();
+            break;
+        case 1:
+            areas();
+            break;
+        case 2:
+            stackedArea();
+            break;
+        case 3:
+            streamgraph();
+            break;
+        case 4:
+            overlappingArea();
+            break;
+        case 5:
+            groupedBar();
+            break;
+        case 6:
+            stackedBar();
+            break;
+        case 7:
+            transposeBar();
+            break;
+        case 8:
+            donut();
+            break;
+        case 9:
+            function_count += 1;
+            donutExplode();
+            break;
+        default:
+            break;
+    }
 }
