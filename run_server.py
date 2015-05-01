@@ -70,10 +70,10 @@ def load_models():
     final_file = {}
     pairs.sort(key=itemgetter(2), reverse=True)
     if request.form['my-form'] == 'Higher Variance':
-	    final_file['Results'] = create_dict(pairs[:6])
+	    final_file = create_dict(pairs[:6])
     else:
 	    final_file['Results'] = create_dict(pairs[-6:])
-    return jsonify(final_file)
+    return render_template('index.html', result=final_file)
 
 print "Loading Models 2008 - 2011"
 mod08 = models.Word2Vec.load('model2008')
