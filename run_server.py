@@ -51,16 +51,24 @@ def load_models(word_name):
 def index():
     return render_template('index.html')
 
+def get_array(word, vals):
+	year_lists = ['2012', '2013', '2014']
+	final_list = []
+	for v in range(len(vals)):
+		dict2 = {}
+		dict2['date'] = year_lists[v]
+		dict2['price'] = vals[v]
+		dict2['symbol'] = word
+		final_list.append(dict2)
+	return final_list
+		
 
 def create_dict(tuples):
 	lists = []
 	for i,j,k in tuples:
 		word_dict = {}
-		word_dict['word'] = i
-		word_dict['2012'] = j[0]
-		word_dict['2013'] = j[1]
-		word_dict['2014'] = j[2]
-		word_dict['variance'] = k
+		word_dict['key'] = i
+		word_dict['values'] = get_array(i,j)
 		lists.append(word_dict)
 	return lists
 
@@ -79,7 +87,10 @@ def load_models():
     pairs = zip(words, similars, varians)	
     final_file = {}
     pairs.sort(key=itemgetter(2), reverse=True)
-    final_file['results'] = create_dict(pairs)
+    if request.form['my-form'] == 'Higher Variance':
+	    final_file['Results'] = create_dict(pairs[:6])
+    else:
+	    final_file['Results'] = create_dict(pairs[-6:])
 
     return jsonify(final_file)
 
