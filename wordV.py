@@ -12,35 +12,6 @@ from nltk.corpus import stopwords
 import nltk
 import cython
 #nltk.download()
-def text_proc(Files):
-    TextFiles = []
-    for i in Files:
-        f = open(i)
-        TextFiles.append(f.readlines())
-    Final_text = []
-    for lines in TextFiles:
-        Z = []
-        for line in lines:
-            Z = Z + list(set(re.findall(r"[\w']+", line.lower())))
-
-        Final_text.append(list(set(Z)))
-
-    print len(Final_text)
-
-    
-    return Final_text
-    
-
-
-def ExtractFile(pwd):
-    i = 0
-    for root, dirs, file in os.walk(pwd):
-	i = i+1
-        text_law = []
-        fil = glob.glob(os.path.join(root, '*_*052013*.txt'))
-    return fil
-
-
 class Sentence(object):
 	def __init__(self, dirname):
 		self.dirname = dirname
