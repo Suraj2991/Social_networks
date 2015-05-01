@@ -34,7 +34,7 @@ def index():
     return render_template('index.html')
 
 def get_array(word, vals):
-	year_lists = ['2009', '2010', '2011', '2012', '2013', '2014']
+	year_lists = ['2008', '2009', '2010', '2011', '2012', '2013', '2014']
 	final_list = []
 	for v in range(len(vals)):
 		dict2 = {}
@@ -75,10 +75,12 @@ def load_models():
 	    final_file['Results'] = create_dict(pairs[-6:])
 
     return jsonify(final_file)
-
+print "Loading Models 2008 - 2011"
+mod08 = models.Word2Vec.load('model2008')
 mod09 = models.Word2Vec.load('model2009')
 mod10 = models.Word2Vec.load('model2010')
 mod11 = models.Word2Vec.load('model2011')
+print "2012 - 2014"
 mod12 = models.Word2Vec.load('model2012')
 mod13 = models.Word2Vec.load('model2013')
 mod14 = models.Word2Vec.load('model2014')
