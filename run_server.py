@@ -62,14 +62,11 @@ def create_dict(tuples):
 		word_dict['2014'] = j[2]
 		word_dict['variance'] = k
 		lists.append(word_dict)
-	print lists
 	return lists
 
 @app.route('/', methods=['POST'])
 def load_models():
-    print "Going in"
     word_name = request.form['interestingtextfield']
-    print word_name
     x = tuple(mod12.most_similar(word_name))
     y = tuple(mod13.most_similar(word_name))
     z = tuple(mod14.most_similar(word_name))
