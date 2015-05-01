@@ -13,8 +13,8 @@ def get_words(tups, w_list):
 			w_list.append(keys)
 	return w_list
 
-def get_similarities(m1, m2, m3, word, w_n):
-	mods = [m1, m2, m3]
+def get_similarities(m1, m2, m3, m4, m5, m6, word, w_n):
+	mods = [m1, m2, m3, m4, m5, m6]
 	simis = []
 	for w in word:
 		simis_w = []
@@ -28,31 +28,13 @@ def get_similarities(m1, m2, m3, word, w_n):
 	return simis
 		    
 
-"""
-@app.route('/<word_name>')
-def load_models(word_name):
- 	x = tuple(mod12.most_similar(word_name))
- 	y = tuple(mod13.most_similar(word_name))
- 	z = tuple(mod14.most_similar(word_name))
- 	words = []
- 	words = get_words(x, words) 
- 	words = get_words(y, words)
- 	words = get_words(z, words)
- 	similars = get_similarities(mod12, mod13, mod14, words, word_name)
- 	varians = map(np.var, similars)
- 	pairs = zip(words, similars, varians)	
- 
- 	pairs.sort(key=itemgetter(2), reverse=True)
- 	for i,j,k in pairs:
- 		print i, j, k 
-"""
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 def get_array(word, vals):
-	year_lists = ['2012', '2013', '2014']
+	year_lists = ['2009', '2010', '2011', '2012', '2013', '2014']
 	final_list = []
 	for v in range(len(vals)):
 		dict2 = {}
@@ -82,7 +64,7 @@ def load_models():
     words = get_words(x, words) 
     words = get_words(y, words)
     words = get_words(z, words)
-    similars = get_similarities(mod12, mod13, mod14, words, word_name)
+    similars = get_similarities(mod09, mod10, mod11, mod12, mod13, mod14, words, word_name)
     varians = map(np.var, similars)
     pairs = zip(words, similars, varians)	
     final_file = {}
@@ -94,6 +76,9 @@ def load_models():
 
     return jsonify(final_file)
 
+mod09 = models.Word2Vec.load('model2009')
+mod10 = models.Word2Vec.load('model2010')
+mod11 = models.Word2Vec.load('model2011')
 mod12 = models.Word2Vec.load('model2012')
 mod13 = models.Word2Vec.load('model2013')
 mod14 = models.Word2Vec.load('model2014')
