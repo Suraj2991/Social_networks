@@ -70,7 +70,7 @@ def load_models():
     final_file = {}
     pairs.sort(key=itemgetter(2), reverse=True)
     if request.form['my-form'] == 'Higher Variance':
-	    final_file = create_dict(pairs[:6])
+	    final_file['Results'] = create_dict(pairs[:6])
     else:
 	    final_file['Results'] = create_dict(pairs[-6:])
     return render_template('index.html', result=final_file)
