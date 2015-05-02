@@ -25,9 +25,9 @@ def get_similarities(m1, m2, m3, m4, m5, m6, word, w_n):
 		for mos in mods:
 			try:
 			    val = mos.similarity(w_n, w)
-			    simis_w.append(val)
+			    simis_w.append(val+1)
 			except:
-			    simis_w.append(0)
+			    simis_w.append(1)
 		simis.append(simis_w)
 	return simis
 		    
