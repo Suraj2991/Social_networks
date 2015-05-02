@@ -1,3 +1,5 @@
+var my_data_received;
+
 var m = [20, 20, 30, 20],
     w = 960 - m[1] - m[3],
     h = 500 - m[0] - m[2];
@@ -41,7 +43,7 @@ var area = d3.svg.area()
     .interpolate("basis")
     .x(function(d) { return x(d.date); })
     .y1(function(d) { return y(d.price); });
-
+    
 d3.csv("/static/d3/stocks.csv", function(data) {
   var parse = d3.time.format("%b %Y").parse;
 
@@ -63,13 +65,17 @@ d3.csv("/static/d3/stocks.csv", function(data) {
   // Sort by maximum price, descending.
   symbols.sort(function(a, b) { return b.maxPrice - a.maxPrice; });
     
+  console.log("Their Data");
+  console.log(symbols);
   var g = svg.selectAll("g")
       .data(symbols)
     .enter().append("g")
       .attr("class", "symbol");
 
-  setTimeout(lines, duration);
+  //setTimeout(lines, duration);
 });
+
+
 
 // Grab a new graph
 /*
@@ -79,16 +85,85 @@ svg.on("click", function() {
 });
 */
 
+$(document).ready(function () {
+    console.log('ready');
+});
+
+function high_var(){
+    var interest_word = document.getElementById('interestingtextfield').value;
+    //var xmlhttp new XMLHttpRequest();
+
+    
+    var request = $.ajax({
+        type: "GET",
+        url: "http://localhost:5000/example_array/" + interest_word,
+        contentType: "application/json",
+        success: function(data)
+        {
+            my_data_received = data['Results'];
+            start_display(data['Results']);
+        },
+        //data: {"name":""}, // if you wanted to specifiy what list then pass an actual name
+        //dataType: ""
+    });
+
+     /*
+     request.done(function(JSON_array) {
+        console.log("Resp");
+        array_data = JSON.parse(JSON_array)["array"]
+        console.log(array_data);
+        //from here you have your array to play with
+    }); */
+    
+}
+
+function low_var(){
+    var interest_word = document.getElementById('interestingtextfield').value;
+}
+
+function start_display(data){
+    
+    //donutExplode();
+
+    svg.selectAll("*").remove();
+    svg.selectAll("g").data(symbols).enter().append("g").attr("class", "symbol");
+    symbols = data; 
+
+    symbols.forEach(function(s) {
+    //s.values.forEach(function(d) { d.date = parse(d.date); d.price = +d.price; });
+    s.values.forEach(function(d) { d.date = d.date; d.price = +d.price; });
+    s.maxPrice = d3.max(s.values, function(d) { return d.price; });
+    s.sumPrice = d3.sum(s.values, function(d) { return d.price; });
+    });
+
+  symbols.sort(function(a, b) { return b.maxPrice - a.maxPrice; });
+  
+  console.log("My Data");
+  console.log(symbols);
+
+  // Sort by maximum price, descending.
+    var g = svg.selectAll("g")
+        .data(symbols)
+        .enter().append("g")
+        .attr("class", "symbol");
+    
+    setTimeout(lines, duration);
+} 
+
+
 function lines() {
   x = d3.time.scale().range([0, w - 60]);
   y = d3.scale.linear().range([h / 4 - 20, 0]);
 
+  console.log("InLines");
+  console.log(symbols);   
   // Compute the minimum and maximum date across symbols.
   x.domain([
     d3.min(symbols, function(d) { return d.values[0].date; }),
     d3.max(symbols, function(d) { return d.values[d.values.length - 1].date; })
   ]);
 
+  console.log("After Domain");
   var g = svg.selectAll(".symbol")
       .attr("transform", function(d, i) { return "translate(0," + (i * h / 4 + 10) + ")"; });
 
@@ -132,11 +207,12 @@ function lines() {
       return true;
     }
   });
-  
+  console.log("Out of Lines");  
   //setTimeout(horizons, 500);
 }
 
 function horizons() {
+  console.log("In Horizons");
   svg.insert("defs", ".symbol")
     .append("clipPath")
       .attr("id", "clip")
@@ -161,7 +237,7 @@ function horizons() {
   g.select("text").transition()
       .duration(duration)
       .attr("transform", function(d) { return "translate(" + (w - 60) + "," + (h / 4 - 20) + ")"; })
-      .attr("dy", "0em");
+      .attr("dy", "-2em");
 
   g.each(function(d) {
     y.domain([0, d.maxPrice]);

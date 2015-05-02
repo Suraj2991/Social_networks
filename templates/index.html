@@ -3,7 +3,10 @@
     <head>
         <meta charset="utf-8">
         <title>Keeyon</title>
-        <script type="text/javascript" src="/static/d3/d3.min.js"></script>
+        <script type="text/javascript" src="/static/d3/d3.js"></script>
+       <!--  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+       <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script> -->
+       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"> </script>
         <link rel="stylesheet" type="text/css" href="/static/stylepage.css">
 
     </head>
@@ -23,20 +26,28 @@
 
     
 	    
-            <form action="" method="POST"> 
+            <!--<form action="" method="POST"> 
                 Interesting Word:
                 <input type="text" name="interestingtextfield">
-                <!-- You can choose to keep this submit button or not -->
                 <input type="submit" name="my-form" value="Higher Variance">
 		<input type="submit" name="my-form" value="Lower Variance"> 
-            </form>
+    </form> --> 
+    <!-- <p><a href="#" onClick="high_var();">Top Text</a></p> -->
+    <input type="text" name="interestingtextfield" id="interestingtextfield" class="svgCenter">
+    <button type="button" class="svgCenter" onclick="high_var()">Click Me</button>
+    <!-- <form id="register" name="register" onsubmit="high_var()">
+                Interesting Word:
+                <input type="text" name="interestingtextfield" id="interestingtextfield">
+                <input type="submit">
+		        <input type="submit" name="my-form" value="Lower Variance"> 
+            </form> -->
+
             <svg class="svgCenter" width="60" height="60">
                 <g transform="translate(0,5)">
                     <circle cx="25" cy="25" r="20" class="pumpkin"/>
                 </g>
             </svg>
             <script type="text/javascript" src="/static/d3/exampled3.js"></script>
-            <!-- <script type="text/javascript" src="/static/d3/myd3.js"></script> -->
             <div class="circ"></div>
         </div>
     </body>
