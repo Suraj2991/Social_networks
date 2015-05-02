@@ -107,6 +107,7 @@ def load_models2(word_name):
     """
     final_file['Results'] = create_dict(pairs[:4])
     return jsonify(final_file)
+    #return render_template('index.html', result=final_file)
 
 print "Loading Models 2008 - 2011"
 mod08 = models.Word2Vec.load('model2008')
