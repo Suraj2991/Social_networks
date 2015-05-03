@@ -1,5 +1,9 @@
 var my_data_received;
 
+
+// Start at one because we automatically show lines initially
+var function_count = 0;
+
 var m = [20, 20, 30, 20],
     w = 960 - m[1] - m[3],
     h = 500 - m[0] - m[2];
@@ -90,10 +94,12 @@ function high_var(){
     var interest_word = document.getElementById('interestingtextfield').value;
     //var xmlhttp new XMLHttpRequest();
 
+    // Start at one because we automatically show lines initially
+    function_count = 0;
     
     var request = $.ajax({
         type: "GET",
-        url: "http://localhost:5000/example_array/" + interest_word,
+        url: "http://localhost:5000/HighVar/" + interest_word,
         contentType: "application/json",
         success: function(data)
         {
@@ -114,9 +120,24 @@ function high_var(){
     
 }
 
+
 function low_var(){
     var interest_word = document.getElementById('interestingtextfield').value;
+    function_count = 0; 
+
+    var request = $.ajax({
+        type: "GET",
+        url: "http://localhost:5000/LowVar/" + interest_word,
+        contentType: "application/json",
+        success: function(data)
+        {
+            my_data_received = data['Results'];
+            start_display(data['Results']);
+        },
+    });
+
 }
+
 
 function start_display(data){
     
@@ -673,8 +694,6 @@ var array_of_functions = [
 
 var functions_len = array_of_functions.length;
 
-// Start at one because we automatically show lines initially
-var function_count = 0;
 
 function new_graph() {
     var current_index = function_count % functions_len;
