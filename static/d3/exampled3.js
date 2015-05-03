@@ -24,6 +24,14 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
+var h2 = 100;
+var svg2 = d3.select("body").append("svg")
+  //.attr("width", w - m[1] - m[3])
+    .attr("width", w)
+    .attr("height", h2)
+    .attr("class", "svgCenter")
+    .attr("id", "svgAxis");
+
 var stocks,
     symbols;
 
@@ -52,7 +60,9 @@ d3.csv("/static/d3/stocks.csv", function(data) {
   symbols = d3.nest()
       .key(function(d) { return d.symbol; })
       .entries(stocks = data);
-
+  
+  var number_of_dates = d3.nest()
+     
   // console.log(symbols);
   // Parse dates and numbers. We assume values are sorted by date.
   // Also compute the maximum price per symbol, needed for the y-domain.
@@ -66,8 +76,6 @@ d3.csv("/static/d3/stocks.csv", function(data) {
   // Sort by maximum price, descending.
   symbols.sort(function(a, b) { return b.maxPrice - a.maxPrice; });
     
-  console.log("Their Data");
-  console.log(symbols);
   var g = svg.selectAll("g")
       .data(symbols)
     .enter().append("g")
@@ -87,7 +95,6 @@ svg.on("click", function() {
 */
 
 $(document).ready(function () {
-    console.log('ready');
 });
 
 function high_var(){
@@ -144,6 +151,8 @@ function start_display(data){
     //donutExplode();
 
     svg.selectAll("*").remove();
+    svg2.selectAll("*").remove();
+
     svg.selectAll("g").data(symbols).enter().append("g").attr("class", "symbol");
     symbols = data; 
 
@@ -154,17 +163,40 @@ function start_display(data){
     s.sumPrice = d3.sum(s.values, function(d) { return d.price; });
     });
 
-  symbols.sort(function(a, b) { return b.maxPrice - a.maxPrice; });
-  
-  console.log("My Data");
-  console.log(symbols);
+    var num_of_years = symbols[0].values.length;
+    console.log(num_of_years);
 
-  // Sort by maximum price, descending.
+    var years = [];
+    symbols[0].values.forEach(function(s) {years.push(s.date)});
+
+    symbols.sort(function(a, b) { return b.maxPrice - a.maxPrice; });
+  
+
+    // Sort by maximum price, descending.
     var g = svg.selectAll("g")
         .data(symbols)
         .enter().append("g")
         .attr("class", "symbol");
     
+    var wPadValue = m[1] + m[3];
+    var xScale = d3.scale.linear()
+                     .domain([d3.min(years), d3.max(years)])
+                     .range([0, w - (wPadValue*5)] );
+
+    var xAxis = d3.svg.axis()
+                    .scale(xScale)
+                    .orient("top")
+                    .ticks(years.length)
+                    .tickFormat(d3.format("d"));
+
+    svg2.append("g")
+        .attr("width", w - m[1] - m[3])
+        .attr("class", "axis")
+        //.attr("transform", "translate(-" + tValue +  ", " + (h2 - 30) + ")")
+        .attr("transform", "translate(60, " + (h2 - 60) + ")")
+        .call(xAxis);
+        
+                
     setTimeout(lines, duration);
 } 
 
@@ -173,15 +205,12 @@ function lines() {
   x = d3.time.scale().range([0, w - 60]);
   y = d3.scale.linear().range([h / 4 - 20, 0]);
 
-  console.log("InLines");
-  console.log(symbols);   
   // Compute the minimum and maximum date across symbols.
   x.domain([
     d3.min(symbols, function(d) { return d.values[0].date; }),
     d3.max(symbols, function(d) { return d.values[d.values.length - 1].date; })
   ]);
 
-  console.log("After Domain");
   var g = svg.selectAll(".symbol")
       .attr("transform", function(d, i) { return "translate(0," + (i * h / 4 + 10) + ")"; });
 
@@ -225,12 +254,10 @@ function lines() {
       return true;
     }
   });
-  console.log("Out of Lines");  
   //setTimeout(horizons, 500);
 }
 
 function horizons() {
-  console.log("In Horizons");
   svg.insert("defs", ".symbol")
     .append("clipPath")
       .attr("id", "clip")
@@ -698,7 +725,6 @@ var functions_len = array_of_functions.length;
 function new_graph() {
     var current_index = function_count % functions_len;
     function_count += 1;
-    console.log("Function index: " + current_index); 
     switch(current_index) {
         case 0:
             horizons();
