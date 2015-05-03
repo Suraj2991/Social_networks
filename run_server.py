@@ -11,14 +11,16 @@ app = Flask(__name__)
 #CORS(app, resources=r'/example_array', allow_headers='Content-Type')
 
 def get_words(tups, w_list):
-	
-	for keys, vals in tups:
+	try:
+	    for keys, vals in tups:
 		if keys not in w_list:
 			w_list.append(keys)
+	except:
+		val = 1
 	return w_list
 
-def get_similarities(m1, m2, m3, m4, m5, m6, word, w_n):
-	mods = [m1, m2, m3, m4, m5, m6]
+def get_similarities(m1, m2, m3, m4, m5, m6, m7, word, w_n):
+	mods = [m1, m2, m3, m4, m5, m6, m7]
 	simis = []
 	for w in word:
 		simis_w = []
@@ -27,7 +29,7 @@ def get_similarities(m1, m2, m3, m4, m5, m6, word, w_n):
 			    val = mos.similarity(w_n, w)
 			    simis_w.append(val+1)
 			except:
-			    simis_w.append(1)
+			    simis_w.append(0)
 		simis.append(simis_w)
 	return simis
 		    
@@ -57,50 +59,39 @@ def create_dict(tuples):
 		word_dict['values'] = get_array(i,j)
 		lists.append(word_dict)
 	return lists
-"""
-@app.route('/', methods=['POST'])
-def load_models():
-    word_name = request.form['interestingtextfield']
-    x = tuple(mod12.most_similar(word_name))
-    y = tuple(mod13.most_similar(word_name))
-    z = tuple(mod14.most_similar(word_name))
-    words = []
-    words = get_words(x, words) 
-    words = get_words(y, words)
-    words = get_words(z, words)
-    similars = get_similarities(mod09, mod10, mod11, mod12, mod13, mod14, words, word_name)
-    varians = map(np.var, similars)
-    pairs = zip(words, similars, varians)	
-    final_file = {}
-    pairs.sort(key=itemgetter(2), reverse=True)
-    if request.form['my-form'] == 'Higher Variance':
-	    final_file['Results'] = create_dict(pairs[:6])
-    else:
-	    final_file['Results'] = create_dict(pairs[-6:])
-    return jsonify(final_file)
-"""
+
+def get_wordsimilar(model, word):
+	try: 
+		w = tuple(model.most_similar(word))
+	except: 
+		w = []
+	return w
 
 @app.route("/HighVar/<word_name>", methods=['GET'])
 def high_var(word_name):
     
-    x = tuple(mod12.most_similar(word_name))
-    y = tuple(mod13.most_similar(word_name))
-    z = tuple(mod14.most_similar(word_name))
+    print 'Getting words'
+    x1 = get_wordsimilar(mod08,word_name)
+    x2 = get_wordsimilar(mod09,word_name)
+    x3 = get_wordsimilar(mod10,word_name)
+    x4 = get_wordsimilar(mod11,word_name)
+    x5 = get_wordsimilar(mod12,word_name)
+    x6 = get_wordsimilar(mod13,word_name)
+    x7 = get_wordsimilar(mod14,word_name)
     words = []
-    words = get_words(x, words) 
-    words = get_words(y, words)
-    words = get_words(z, words)
-    similars = get_similarities(mod09, mod10, mod11, mod12, mod13, mod14, words, word_name)
+    words = get_words(x1, words) 
+    words = get_words(x2, words)
+    words = get_words(x3, words)
+    words = get_words(x4, words) 
+    words = get_words(x5, words)
+    words = get_words(x6, words)
+    words = get_words(x7, words)
+    print words
+    similars = get_similarities(mod08, mod09, mod10, mod11, mod12, mod13, mod14, words, word_name)
     varians = map(np.var, similars)
     pairs = zip(words, similars, varians)	
     final_file = {}
     pairs.sort(key=itemgetter(2), reverse=True)
-    """
-    if request.form['my-form'] == 'Higher Variance':
-	    final_file['Results'] = create_dict(pairs[:6])
-    else:
-	    final_file['Results'] = create_dict(pairs[-6:])
-    """
     final_file['Results'] = create_dict(pairs[:4])
     return jsonify(final_file)
     #return render_template('index.html', result=final_file)
@@ -108,19 +99,28 @@ def high_var(word_name):
 @app.route("/LowVar/<word_name>", methods=['GET'])
 def low_var(word_name):
     
-    x = tuple(mod12.most_similar(word_name))
-    y = tuple(mod13.most_similar(word_name))
-    z = tuple(mod14.most_similar(word_name))
+    print 'Getting words'
+    x1 = get_wordsimilar(mod08,word_name)
+    x2 = get_wordsimilar(mod09,word_name)
+    x3 = get_wordsimilar(mod10,word_name)
+    x4 = get_wordsimilar(mod11,word_name)
+    x5 = get_wordsimilar(mod12,word_name)
+    x6 = get_wordsimilar(mod13,word_name)
+    x7 = get_wordsimilar(mod14,word_name)
     words = []
-    words = get_words(x, words) 
-    words = get_words(y, words)
-    words = get_words(z, words)
-    similars = get_similarities(mod09, mod10, mod11, mod12, mod13, mod14, words, word_name)
+    words = get_words(x1, words) 
+    words = get_words(x2, words)
+    words = get_words(x3, words)
+    words = get_words(x4, words) 
+    words = get_words(x5, words)
+    words = get_words(x6, words)
+    words = get_words(x7, words)
+    print words
+    similars = get_similarities(mod08, mod09, mod10, mod11, mod12, mod13, mod14, words, word_name)
     varians = map(np.var, similars)
     pairs = zip(words, similars, varians)	
     final_file = {}
     pairs.sort(key=itemgetter(2), reverse=True)
-
     final_file['Results'] = create_dict(pairs[-4:])
     return jsonify(final_file)
     #return render_template('index.html', result=final_file)
