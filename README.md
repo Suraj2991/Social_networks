@@ -20,7 +20,7 @@ Make sure to enter the paths for models correctly
 run_server.py 
 
 Basically starts the server and loads models.
+
 -----------------------------------------------------------------------------------------------
 
-www.correlationstation.me
-
+http://correlationstation.me/
