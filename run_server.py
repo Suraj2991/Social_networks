@@ -134,4 +134,4 @@ print "2012 - 2014"
 mod12 = models.Word2Vec.load('model2012')
 mod13 = models.Word2Vec.load('model2013')
 mod14 = models.Word2Vec.load('model2014')
-app.run(debug=True)
+app.run(host='0.0.0.0')
