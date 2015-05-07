@@ -1,3 +1,5 @@
+console.log("We are loaded");
+
 var my_data_received;
 
 
@@ -106,7 +108,7 @@ function high_var(){
     
     var request = $.ajax({
         type: "GET",
-        url: "http://localhost:5000/HighVar/" + interest_word,
+        url: "http://correlationstation.me/HighVar/" + interest_word.toLowerCase(),
         contentType: "application/json",
         success: function(data)
         {
@@ -134,7 +136,7 @@ function low_var(){
 
     var request = $.ajax({
         type: "GET",
-        url: "http://localhost:5000/LowVar/" + interest_word,
+        url: "http://correlationstation.me/LowVar/" + interest_word.toLowerCase(),
         contentType: "application/json",
         success: function(data)
         {
