@@ -1,7 +1,7 @@
 console.log("We are loaded");
 
 var my_data_received;
-
+var can_click = true;
 
 // Start at one because we automatically show lines initially
 var function_count = 0;
@@ -99,6 +99,9 @@ svg.on("click", function() {
 $(document).ready(function () {
 });
 
+function set_can_click_true() {
+    can_click = true;
+}
 function high_var(){
     var interest_word = document.getElementById('interestingtextfield').value;
     //var xmlhttp new XMLHttpRequest();
@@ -152,6 +155,7 @@ function start_display(data){
     
     //donutExplode();
 
+    can_click = false; 
     svg.selectAll("*").remove();
     svg2.selectAll("*").remove();
 
@@ -200,6 +204,7 @@ function start_display(data){
         
                 
     setTimeout(lines, duration);
+    setTimeout(set_can_click_true, duration + 100);
 } 
 
 
@@ -656,6 +661,7 @@ function donut() {
 }
 
 function donutExplode() {
+  can_click = false;
   var r0a = h / 2 - x.rangeBand() / 2,
       r1a = h / 2,
       r0b = 2 * h - x.rangeBand() / 2,
@@ -695,6 +701,8 @@ function donutExplode() {
     svg.selectAll("g").data(symbols).enter().append("g").attr("class", "symbol");
     lines();
   }, duration);
+
+  setTimeout(set_can_click_true, 2 * (duration + 100));
 }
 
 function linesToHorizon() {
@@ -725,41 +733,46 @@ var functions_len = array_of_functions.length;
 
 
 function new_graph() {
-    var current_index = function_count % functions_len;
-    function_count += 1;
-    switch(current_index) {
-        case 0:
-            horizons();
-            break;
-        case 1:
-            areas();
-            break;
-        case 2:
-            stackedArea();
-            break;
-        case 3:
-            streamgraph();
-            break;
-        case 4:
-            overlappingArea();
-            break;
-        case 5:
-            groupedBar();
-            break;
-        case 6:
-            stackedBar();
-            break;
-        case 7:
-            transposeBar();
-            break;
-        case 8:
-            donut();
-            break;
-        case 9:
-            function_count += 1;
-            donutExplode();
-            break;
-        default:
-            break;
+    if (can_click)
+    {
+        can_click = false;
+        var current_index = function_count % functions_len;
+        function_count += 1;
+        switch(current_index) {
+            case 0:
+                horizons();
+                break;
+            case 1:
+                areas();
+                break;
+            case 2:
+                stackedArea();
+                break;
+            case 3:
+                streamgraph();
+                break;
+            case 4:
+                overlappingArea();
+                break;
+            case 5:
+                groupedBar();
+                break;
+            case 6:
+                stackedBar();
+                break;
+            case 7:
+                transposeBar();
+                break;
+            case 8:
+                donut();
+                break;
+            case 9:
+                function_count += 1;
+                donutExplode();
+                break;
+            default:
+                break;
+        }
+        setTimeout(set_can_click_true, duration+100);
     }
 }
